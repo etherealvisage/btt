@@ -1,0 +1,8 @@
+/build
+/btt
+
+core
+
+.vimrc
+.gdb_history
+.ycm_extra_conf.py*

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf8"?>
+<config>
+
+<runtime>
+    <help>false</help>
+    <log-level>0</log-level>
+    <log-file>logs/%d.log</log-file>
+    <arguments></arguments>
+    <exec-path></exec-path>
+    <example></example>
+</runtime>
+
+<arguments>
+    <help>
+        <type>set</type>
+        <short-form>h</short-form>
+        <value>true</value>
+        <target>config/runtime/help</target>
+    </help>
+
+    <log-level>
+        <type>replace</type>
+        <target>config/runtime/log-level</target>
+    </log-level>
+
+    <log-file>
+        <type>replace</type>
+        <long-form>log-file</long-form>
+
+        <default>logs/%d.log</default>
+
+        <target>config/runtime/log-file</target>
+    </log-file>
+
+    <example-add>
+        <type>add</type>
+        <long-form>example-add</long-form>
+
+        <target>config/runtime/example</target>
+    </example-add>
+</arguments>
+
+</config>
