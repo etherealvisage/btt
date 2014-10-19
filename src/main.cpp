@@ -7,6 +7,7 @@
 #include <object/object.hpp>
 #include <object/filter.hpp>
 #include <object/structure.hpp>
+#include <object/store.hpp>
 
 #include <iostream>
 #include <string>
@@ -30,7 +31,8 @@ public:
 };
 
 int main(int core_unused argc, const char core_unused *argv[]) {
-    object::object obj1, obj2;
+    object::store st;
+    object::object obj1 = st.make(), obj2 = st.make();
 
     obj1.set(int_prop());
     obj2.set(str_prop());
@@ -57,6 +59,14 @@ int main(int core_unused argc, const char core_unused *argv[]) {
     wstruct::make_link(obj1, obj2, std::move(wadj_list(42)));
 
     std::cout << "obj1 -> obj2 link weight: " << wstruct::get_link(obj1, obj2).val << std::endl;
+
+    auto astruct2 = object::structure2<adj_list>();
+
+    astruct2.add_link(obj1, obj2);
+
+    auto astruct3 = object::structure3<adj_list>(st);
+
+    astruct3.make_link(obj1.id(), obj2.id());
 
     return 0;
 }

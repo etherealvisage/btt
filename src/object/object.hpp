@@ -13,23 +13,23 @@
 
 namespace object {
 
+class store;
+
 class object {
 public:
     using id_t = long;
 private:
-    class id_registry {
-    private:
-        static id_t s_lastid;
-        friend class object;
-
-        static id_t next() { return s_lastid++; }
-    };
-private:
     std::unordered_map<std::type_index, boost::any> m_properties;
     id_t m_id;
-public:
-    object() { m_id = id_registry::next(); }
+    int m_refcount;
+    store &m_store;
+private:
+    friend class store;
+    object(store &store, id_t id) : m_id(id), m_refcount(1), m_store(store) {}
 
+    void inc() { m_refcount ++; }
+    bool dec() { m_refcount --; return m_refcount == 0; }
+public:
     id_t id() const { return m_id; }
 
     template<typename T>
