@@ -32,7 +32,7 @@ void store::gc() {
 
     std::vector<object::id_t> todestroy;
     for(auto it : m_objects) {
-        std::cout << "object " << it.first << " count: " << seen.count(it.first) << std::endl;
+        //std::cout << "object " << it.first << " count: " << seen.count(it.first) << std::endl;
         if(seen.count(it.first)) continue;
         else {
             todestroy.push_back(it.first);

@@ -24,7 +24,6 @@ public:
 private:
     std::unordered_map<std::type_index, boost::any> m_properties;
     std::unordered_map<std::type_index, std::function<void (core::strstream &, boost::any &)>> m_dump_helpers;
-    //std::unordered_map<std::type_index, void (core::strstream &, boost::any &)> m_dump_helpers;
     id_t m_id;
     friend class ref;
     store &m_store;

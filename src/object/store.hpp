@@ -20,11 +20,11 @@ protected:
     // keep these functions hidden to prevent them from being misused.
     friend class ref;
     void add_ref(object::id_t context, object::id_t target) {
-        std::cout << "adding reference between " << context << " and " << target << std::endl;
+        //std::cout << "adding reference between " << context << " and " << target << " (currently " << m_refs[context][target] << ")" << std::endl;
         m_refs[context][target] ++;
     }
     void remove_ref(object::id_t context, object::id_t target) {
-        std::cout << "removing reference between " << context << " and " << target << std::endl;
+        //std::cout << "removing reference between " << context << " and " << target  << " (currently " << m_refs[context][target] << ")" << std::endl;
         m_refs[context][target] --;
         if(m_refs[context][target] == 0) m_refs[context].erase(target);
         if(m_refs[context].size() == 0) m_refs.erase(context);

@@ -49,6 +49,18 @@ int main(int core_unused argc, const char core_unused *argv[]) {
         as.make_link(o1, o2);
 
         dump_all("During structure", st);
+
+        as.remove_link(o1, o2);
+
+        dump_all("After removal", st);
+
+        st.gc();
+
+        dump_all("After GC", st);
+
+        as.make_link(o2, o1);
+
+        dump_all("After addition", st);
     }
     dump_all("After structure", st);
     st.gc();
