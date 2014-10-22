@@ -31,9 +31,8 @@ public:
 };
 
 void dump_all(const char *why, object::store &st) {
-    core::strstream ss;
-    st.dump_all(ss);
-    std::cout << why << std::endl << ss.operator std::string() << std::endl;
+    std::cout << why << std::endl;
+    st.dump_all(std::cout);
 }
 
 int main(int core_unused argc, const char core_unused *argv[]) {

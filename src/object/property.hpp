@@ -9,7 +9,7 @@ class property {
 public:
     virtual ~property() = default;
 
-    virtual void dump(core::strstream &) {}
+    virtual void dump(std::ostream &) {}
 };
 
 } // namespace object

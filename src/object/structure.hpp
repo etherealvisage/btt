@@ -36,7 +36,7 @@ struct structure_property : public property {
 public:
     std::map<object::id_t, std::map<object::id_t, ref>> links;
 
-    virtual void dump(core::strstream &into) {
+    virtual void dump(std::ostream &into) {
         bool first = true;
         for(auto p : links) {
             if(!first) into << ", ";

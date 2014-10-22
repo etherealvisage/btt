@@ -23,7 +23,8 @@ public:
     static constexpr id_t invalid_id = -1;
 private:
     std::unordered_map<std::type_index, boost::any> m_properties;
-    std::unordered_map<std::type_index, std::function<void (core::strstream &, boost::any &)>> m_dump_helpers;
+    std::unordered_map<std::type_index, std::function<void (std::ostream &,
+        boost::any &)>> m_dump_helpers;
     id_t m_id;
     friend class ref;
     store &m_store;
@@ -64,13 +65,13 @@ public:
 
     template<typename T>
     bool set(T && v) {
-        std::function<void (core::strstream &, boost::any &)> wrapper_fct(dump_wrapper<T>);
+        std::function<void (std::ostream &, boost::any &)> wrapper_fct(dump_wrapper<T>);
         m_dump_helpers[std::type_index(typeid(T))] = wrapper_fct;
         return m_properties.insert(
             std::make_pair(std::type_index(typeid(T)), v)).second;
     }
 
-    void dump(core::strstream &into) {
+    void dump(std::ostream &into) {
         into << "[Object " << m_id << "] = {";
         bool first = true;
         for(auto &prop : m_properties) {
@@ -84,7 +85,7 @@ public:
     }
 private:
     template<typename T>
-    static void dump_wrapper(core::strstream &s, boost::any &p) {
+    static void dump_wrapper(std::ostream &s, boost::any &p) {
         boost::any_cast<T>(p).dump(s);
     }
 };

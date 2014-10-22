@@ -41,7 +41,7 @@ void store::gc() {
     for(auto id : todestroy) destroy(id);
 }
 
-void store::dump_all(core::strstream &into) {
+void store::dump_all(std::ostream &into) {
     for(auto &object : m_objects) {
         object.second.dump(into);
         into << "\n";

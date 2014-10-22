@@ -48,7 +48,7 @@ public:
 
     void gc();
 
-    void dump_all(core::strstream &into);
+    void dump_all(std::ostream &into);
 };
 
 } // namespace object
