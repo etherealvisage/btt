@@ -2,29 +2,32 @@
 #define OBJECT_STORE_HPP
 
 #include <map>
+#include <set>
 
 #include "object.hpp"
 
 namespace object {
 
+class ref;
+
 class store {
 private:
     std::map<object::id_t, object> m_objects;
+    //std::map<std::pair<object::id_t, object::id_t>, int> m_refs;
+    std::map<object::id_t, std::map<object::id_t, int>> m_refs;
     object::id_t m_lastid;
 protected:
-    friend class object;
-    void destroy(object::id_t id) {
-        if(m_objects.count(id) == 0)
-            throw std::runtime_error("Object does not exist in store");
-        m_objects.erase(m_objects.find(id));
+    // keep these functions hidden to prevent them from being misused.
+    friend class ref;
+    void add_ref(object::id_t context, object::id_t target) {
+        std::cout << "adding reference between " << context << " and " << target << std::endl;
+        m_refs[context][target] ++;
     }
-public:
-    store() : m_lastid(1) {}
-
-    object &make() {
-        object::id_t id = m_lastid ++;
-        return m_objects.insert(
-            std::make_pair(id, object(*this, id))).first->second;
+    void remove_ref(object::id_t context, object::id_t target) {
+        std::cout << "removing reference between " << context << " and " << target << std::endl;
+        m_refs[context][target] --;
+        if(m_refs[context][target] == 0) m_refs[context].erase(target);
+        if(m_refs[context].size() == 0) m_refs.erase(context);
     }
 
     object &get(object::id_t id) {
@@ -33,19 +36,19 @@ public:
         return m_objects.find(id)->second;
     }
 
-    const object &get(object::id_t id) const {
+    void destroy(object::id_t id) {
         if(m_objects.count(id) == 0)
             throw std::runtime_error("Object does not exist in store");
-        return m_objects.find(id)->second;
+        m_objects.erase(m_objects.find(id));
     }
+public:
+    store() : m_lastid(1) {}
 
-    void inc(object::id_t id) {
-        get(id).inc();
-    }
+    ref make();
 
-    void dec(object::id_t id) {
-        if(get(id).dec()) destroy(id);
-    }
+    void gc();
+
+    void dump_all(core::strstream &into);
 };
 
 } // namespace object

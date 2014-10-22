@@ -1,0 +1,9 @@
+Some notes on how objects are referenced:
+- Direct object use should be limited to within a function scope when possible,
+    or at most between private helper functions in a single class. Any time an
+    object is passed around between modules, an object::ref should be used
+    instead.
+- Object IDs should not be used except by object:: namespace code. object::ref
+    instances are lightweight enough. Using them as hashing keys is acceptable,
+    or as unique identifiers for the purposes of human pretty-printing.
+- 
