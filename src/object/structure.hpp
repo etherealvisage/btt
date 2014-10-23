@@ -89,15 +89,6 @@ public:
                 throw std::runtime_error("Cannot add already present link");
     }
 
-    linkinfo_t *link_raw(const ref &from, const ref &to) {
-        auto &str = m_rootobj->get<helpers::structure_property>();
-        auto it = str.links.find(from->id());
-        if(it == str.links.end()) return nullptr;
-        auto it2 = it->second.find(to->id());
-        if(it2 == it->second.end()) return nullptr;
-        return &it2->second->get<linkinfo_t>();
-    }
-
     bool has_link(const ref &from, const ref &to) {
         return link_raw(from, to) != nullptr;
     }
@@ -119,6 +110,15 @@ public:
         it->second.erase(it2);
 
         if(it->second.size() == 0) str.links.erase(it);
+    }
+private:
+    linkinfo_t *link_raw(const ref &from, const ref &to) {
+        auto &str = m_rootobj->get<helpers::structure_property>();
+        auto it = str.links.find(from->id());
+        if(it == str.links.end()) return nullptr;
+        auto it2 = it->second.find(to->id());
+        if(it2 == it->second.end()) return nullptr;
+        return &it2->second->get<linkinfo_t>();
     }
 };
 

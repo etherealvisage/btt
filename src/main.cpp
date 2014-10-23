@@ -1,16 +1,19 @@
 #include <iostream>
 #include <cstdio>
+#include <string>
+#include <cctype>
 
 #include <core/strstream.hpp>
 #include <core/unused.hpp>
+#include <core/data_file.hpp>
 
 #include <object/object.hpp>
 #include <object/filter.hpp>
 #include <object/structure.hpp>
 #include <object/store.hpp>
 
-#include <iostream>
-#include <string>
+#include <world/geography.hpp>
+#include <world/name_generator.hpp>
 
 class int_prop : object::property {
 public:
@@ -37,33 +40,26 @@ void dump_all(const char *why, object::store &st) {
 
 int main(int core_unused argc, const char core_unused *argv[]) {
     object::store st;
-    object::ref o1 = st.make();
-    object::ref o2 = st.make();
+    
+    world::geography geog(st);
 
-    using astruct = object::structure<adj_list>;
+    geog.generate();
 
-    dump_all("Before structure", st);
-    {
-        astruct as(st);
-        as.make_link(o1, o2);
+    world::name_generator ng;
+    ng.load_trigraphs("male", core::data_file("/names-male.tri").stream());
+    ng.load_trigraphs("female", core::data_file("/names-female.tri").stream());
 
-        dump_all("During structure", st);
-
-        as.remove_link(o1, o2);
-
-        dump_all("After removal", st);
-
-        st.gc();
-
-        dump_all("After GC", st);
-
-        as.make_link(o2, o1);
-
-        dump_all("After addition", st);
+    boost::random::mt19937 gen;
+    for(int i = 0; i < 100; i ++) {
+        std::string name = ng.generate_name("female", gen);
+        name[0] = std::toupper(name[0]);
+        std::cout << name << std::endl;
     }
-    dump_all("After structure", st);
-    st.gc();
-    dump_all("After GC", st);
+    for(int i = 0; i < 100; i ++) {
+        std::string name = ng.generate_name("male", gen);
+        name[0] = std::toupper(name[0]);
+        std::cout << name << std::endl;
+    }
 
     return 0;
 }
