@@ -1,7 +1,8 @@
 /build
 /btt
+/tmp
 
-core
+/core.*
 
 .vimrc
 .gdb_history
