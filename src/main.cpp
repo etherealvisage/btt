@@ -49,17 +49,5 @@ int main(int core_unused argc, const char core_unused *argv[]) {
     ng.load_trigraphs("male", core::data_file("/names-male.tri").stream());
     ng.load_trigraphs("female", core::data_file("/names-female.tri").stream());
 
-    boost::random::mt19937 gen;
-    for(int i = 0; i < 100; i ++) {
-        std::string name = ng.generate_name("female", gen);
-        name[0] = std::toupper(name[0]);
-        std::cout << name << std::endl;
-    }
-    for(int i = 0; i < 100; i ++) {
-        std::string name = ng.generate_name("male", gen);
-        name[0] = std::toupper(name[0]);
-        std::cout << name << std::endl;
-    }
-
     return 0;
 }
